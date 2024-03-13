@@ -17,8 +17,8 @@ function createUser($conn, $username, $email, $password)
   ];
 
   // Validate username
-  if (strlen($username) < 6 || strlen($username) > 20) {
-    $response['message'] = "Username must be between 6 and 20 characters";
+  if (!preg_match("/^[a-zA-Z0-9]{6,20}$/", $username)) {
+    $response['message'] = "Username must be between 6 and 20 characters long, and contain only alphanumeric characters.";
     return json_encode($response);
   }
 
@@ -53,7 +53,7 @@ function createUser($conn, $username, $email, $password)
   $add_user->execute();
 
   $response['status'] = true;
-  $response['message'] = 'Your account has been created!';
+  $response['message'] = 'Your account has been successfully created! Redirecting you in 3 seconds...';
   $response['data']['user_id'] = $conn->insert_id;
   return json_encode($response);
 }

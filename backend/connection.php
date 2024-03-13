@@ -1,4 +1,8 @@
 <?php
+// Fix CORS error
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: *');
+
 $db_host = "localhost";
 $db_user = "root";
 $db_pass = "";
