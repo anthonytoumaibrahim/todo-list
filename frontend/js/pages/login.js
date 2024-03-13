@@ -1,39 +1,56 @@
-// Check if user is logged in
-if (
-  localStorage.username === window.user_credentials.username &&
-  localStorage.password === window.user_credentials.password
-) {
-  window.location.replace("./index.html");
+// Check if user is already logged in
+if (isLoggedIn) {
+  window.location.href = "../index.html";
 }
 
-const form = document.querySelector(".login-form");
-const error_message = document.getElementById("error-message");
+const loginForm = document.querySelector(".login-form");
+const loginBtn = document.querySelector(".login-form button");
+const responseMessage = document.querySelector("#response-message");
+const [usernameInput, passwordInput] = [
+  document.getElementById("username"),
+  document.getElementById("password"),
+];
 
-form.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const [username, password] = [
-    document.getElementById("username").value,
-    document.getElementById("password").value,
-  ];
-  form.classList.toggle("form-error", false);
-  error_message.classList.toggle("hide", true);
-  if (
-    username !== window.user_credentials.username ||
-    password !== window.user_credentials.password
-  ) {
-    form.classList.toggle("form-error", true);
-    error_message.classList.toggle("hide", false);
-    return;
-  }
-  document.getElementById("success-message").classList.remove("hide");
-  document
-    .querySelector('button[type="submit"]')
-    .setAttribute("disabled", true);
+loginForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  responseMessage.classList.remove("hide");
+  responseMessage.innerHTML = "";
 
-  localStorage.setItem("username", username);
-  localStorage.setItem("password", password);
+  const username = usernameInput.value;
+  const password = passwordInput.value;
 
-  setTimeout(() => {
-    window.location.replace("./index.html");
-  }, 5000);
+  login(username, password)
+    .then((data) => {
+      responseMessage.innerHTML = data?.message;
+      responseMessage.classList.toggle("text-primary", data.status);
+      responseMessage.classList.toggle("text-error", !data.status);
+
+      if (data.status) {
+        loginBtn.disabled = true;
+        localStorage.userId = data.data.user_id;
+        setTimeout(() => {
+          window.location.href = "../index.html";
+        }, 3000);
+      }
+    })
+    .catch((err) => {
+      responseMessage.classList.toggle("text-error", true);
+      responseMessage.innerHTML = err;
+    });
 });
+
+const login = async (username, password) => {
+  const response = await fetch(BASE_API_URL + "/login.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username: username,
+      password: password,
+    }),
+  });
+  const data = await response.json();
+
+  return data;
+};

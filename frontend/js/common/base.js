@@ -1,11 +1,8 @@
-BASE_API_URL = 'http://localhost:8000';
+BASE_API_URL = "http://localhost:8000";
 
-window.user_credentials = {
-  username: "AdminSEF123",
-  password: "SeF@ctORy$$456",
-};
+const isLoggedIn = localStorage.userId ? true : false;
 
 document.querySelector(".logout-link")?.addEventListener("click", () => {
   localStorage.clear();
-  window.location.replace('./login.html')
+  window.location.replace("./login.html");
 });

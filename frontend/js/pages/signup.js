@@ -1,3 +1,8 @@
+// Check if user is already logged in
+if (isLoggedIn) {
+  window.location.href = "../index.html";
+}
+
 const signupForm = document.querySelector(".signup-form");
 const signupBtn = document.querySelector(".signup-form button[type=submit]");
 const responseMessage = document.querySelector("#response-message");
@@ -29,9 +34,10 @@ signupForm.addEventListener("submit", (e) => {
         }, 3000);
       }
     })
-    .catch(
-      (err) => (responseMessage.innerHTML = `<p class="text-error">${err}</p>`)
-    );
+    .catch((err) => {
+      responseMessage.classList.toggle("text-error", true);
+      responseMessage.innerHTML = err;
+    });
 });
 
 const signup = async (username, email, password) => {

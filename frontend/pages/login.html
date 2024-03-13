@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="../styles/common/colors.css" />
     <link rel="stylesheet" href="../styles/common/utilities.css" />
     <!-- Page Styles -->
-    <link rel="stylesheet" href="../styles/pages/login.css" />
+    <link rel="stylesheet" href="../styles/pages/auth.css" />
 
     <!-- Scripts -->
     <script src="../js/common/base.js" defer></script>
@@ -41,25 +41,19 @@
       </p>
       <form action="" method="POST" class="login-form">
         <div class="fieldset">
-          <label for="username">Username</label>
+          <label for="username">Username or email address</label>
           <input
             type="text"
             id="username"
             class="form-input"
-            placeholder="your.username"
-            spellcheck="false"
+            placeholder="Username or email address"
           />
         </div>
         <div class="fieldset">
           <label for="password">Password</label>
           <input type="password" id="password" class="form-input" />
         </div>
-        <p class="text-error hide" id="error-message">
-          Please enter the correct credentials.
-        </p>
-        <p class="text-primary hide" id="success-message">
-          <strong>Login successful!</strong> Redirecting you in 5 seconds...
-        </p>
+        <p class="hide" id="response-message"></p>
         <button class="button" type="submit">Log in</button>
       </form>
     </section>
