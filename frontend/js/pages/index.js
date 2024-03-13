@@ -1,47 +1,70 @@
-let todos = [];
-
 const todosContainer = document.querySelector(".todos");
 const no_todos = document.querySelector(".no-todos");
 const add_todo_form = document.querySelector(".add-todo-form");
 const add_todo_button = document.querySelector(".add-todo-button");
 
 // Check if user is not logged in
-if (
-  localStorage.username !== window.user_credentials.username &&
-  localStorage.password !== window.user_credentials.password
-) {
-  window.location.replace("./login.html");
-} else {
-  add_todo_button.removeAttribute("disabled");
+if (!isLoggedIn) {
+  window.location.href = "./pages/login.html";
 }
 
 // Load stored todos
-const storedTodos = JSON.parse(localStorage.todos ?? "[]");
-if (storedTodos.length > 0) {
-  no_todos.classList.toggle("hide", true);
-  storedTodos.forEach((todo) =>
-    addToDo(todo.value, todo.checked, todo.important)
+const getTodos = async () => {
+  const response = await fetch(
+    BASE_API_URL + `/CRUD/getTodos.php?userId=${getLoggedInUser()}`
   );
-}
+  const data = await response.json();
+  return data;
+};
+getTodos().then((data) => {
+  const todos = data.data;
+  if (todos.length > 0) {
+    no_todos.classList.toggle("hide", true);
+    todos.forEach((todo) =>
+      addToDo(todo.id, todo.value, todo.checked, todo.important)
+    );
+  }
+});
 
 function storeTodos(array) {
   localStorage.todos = JSON.stringify(array);
 }
 
-function addToDo(value = "", checked = false, important = false) {
-  if (value.trim() === "") {
-    return;
-  }
-  const todo_id = todos.length + 1;
-  todos = [
-    ...todos,
-    {
-      id: todo_id,
+const createTodo = async (value = "", checked = false, important = false) => {
+  const response = await fetch(BASE_API_URL + "/CRUD/createTodo.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
       value: value,
       checked: checked,
       important: important,
-    },
-  ];
+      userId: getLoggedInUser(),
+    }),
+  });
+  const data = await response.json();
+  return data;
+};
+
+add_todo_form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const input = document.querySelector(".add-todo-form input");
+  let important = false;
+  if (input.value.slice(-1) == "!") {
+    important = true;
+  }
+  createTodo(input.value, false, important).then((data) => {
+    const id = data.data.id;
+    addToDo(id, input.value, false, important);
+    input.value = "";
+  });
+});
+
+const addToDo = (todo_id, value = "", checked = false, important = false) => {
+  if (value.trim() === "") {
+    return;
+  }
   const todo = document.createElement("div");
   todo.classList.add("todo");
   todo.dataset.id = todo_id;
@@ -73,9 +96,8 @@ function addToDo(value = "", checked = false, important = false) {
   todo.append(check_icon, important_icon, todo_text, trash_icon);
   todosContainer.appendChild(todo);
 
-  storeTodos(todos);
   no_todos.classList.toggle("hide", true);
-}
+};
 
 function removeTodo(id) {
   document.getElementById(`todo_${id}`).remove();
@@ -124,15 +146,4 @@ add_todo_button.addEventListener("click", () => {
   document
     .querySelector(".add-todo-button .button-text-cancel")
     .classList.toggle("hide");
-});
-
-add_todo_form.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const input = document.querySelector(".add-todo-form input");
-  let important = false;
-  if (input.value.slice(-1) == "!") {
-    important = true;
-  }
-  addToDo(input.value, false, important);
-  input.value = "";
 });
