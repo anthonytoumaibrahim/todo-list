@@ -21,11 +21,11 @@
     <link rel="stylesheet" href="../styles/common/colors.css" />
     <link rel="stylesheet" href="../styles/common/utilities.css" />
     <!-- Page Styles -->
-    <link rel="stylesheet" href="../styles/pages/login.css" />
+    <link rel="stylesheet" href="../styles/pages/auth.css" />
 
     <!-- Scripts -->
     <script src="../js/common/base.js" defer></script>
-    <script src="../js/pages/login.js" defer></script>
+    <script src="../js/pages/signup.js" defer></script>
   </head>
   <body>
     <header class="margin-bottom">
@@ -40,7 +40,7 @@
         Create an account now to start managing your todos!
         <a href="./login.html">Already have an account?</a>
       </p>
-      <form action="" method="POST" class="login-form">
+      <form action="" method="POST" class="signup-form">
         <div class="fieldset">
           <label for="username">Username</label>
           <input
@@ -68,12 +68,7 @@
             placeholder="Must be at least 8 characters long"
           />
         </div>
-        <p class="text-error hide" id="error-message">
-          Please enter the correct credentials.
-        </p>
-        <p class="text-primary hide" id="success-message">
-          <strong>Login successful!</strong> Redirecting you in 5 seconds...
-        </p>
+        <p class="hide" id="response-message"></p>
         <button class="button" type="submit">Sign up</button>
       </form>
     </section>
