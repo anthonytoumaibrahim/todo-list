@@ -1,0 +1,69 @@
+.todos-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.todos {
+  background-color: var(--light-color);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.todo {
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--light-alt-color);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 20px;
+}
+.todo:not(.todo-done):hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #ffffff;
+}
+.todo:not(.todo-done):hover .checked-todo {
+  opacity: 1;
+}
+.todo-text,
+.checked-todo,
+.emphasis-icn,
+.delete-todo {
+  cursor: pointer;
+}
+.todo-text:hover,
+.checked-todo:hover,
+.emphasis-icn:hover,
+.delete-todo:hover {
+  opacity: 0.75 !important;
+}
+.todo-text {
+  width: 100%;
+}
+.delete-todo {
+  margin-left: auto;
+  color: var(--error-color);
+}
+.checked-todo {
+  opacity: 0.25;
+}
+.todo-done .checked-todo {
+  opacity: 1;
+}
+.todo-done {
+  background-color: var(--muted-alt-color);
+}
+.todo-done p {
+  text-decoration: line-through;
+}
+.todo-important .emphasis-icn {
+  color: var(--error-color);
+}
+.no-todos {
+  text-align: center;
+  color: var(--muted-color);
+}

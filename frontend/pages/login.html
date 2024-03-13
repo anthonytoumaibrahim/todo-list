@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | Todo list</title>
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <!-- Common Styles -->
+    <link rel="stylesheet" href="../styles/common/base.css" />
+    <link rel="stylesheet" href="../styles/common/colors.css" />
+    <link rel="stylesheet" href="../styles/common/utilities.css" />
+    <!-- Page Styles -->
+    <link rel="stylesheet" href="../styles/pages/login.css" />
+
+    <!-- Scripts -->
+    <script src="../js/common/base.js" defer></script>
+    <script src="../js/pages/login.js" defer></script>
+  </head>
+  <body>
+    <header class="margin-bottom">
+      <nav class="container">
+        <h1>Todo</h1>
+      </nav>
+    </header>
+
+    <section class="container text-center">
+      <h2>Login</h2>
+      <p class="margin-bottom">
+        Please login using your username and password to make a todo list.
+      </p>
+      <form action="" method="POST" class="login-form">
+        <div class="fieldset">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            class="form-input"
+            placeholder="your.username"
+            spellcheck="false"
+          />
+        </div>
+        <div class="fieldset">
+          <label for="password">Password</label>
+          <input type="password" id="password" class="form-input" />
+        </div>
+        <p class="text-error hide" id="error-message">
+          Please enter the correct credentials.
+        </p>
+        <p class="text-primary hide" id="success-message">
+          <strong>Login successful!</strong> Redirecting you in 5 seconds...
+        </p>
+        <button class="button" type="submit">Log in</button>
+      </form>
+    </section>
+  </body>
+</html>

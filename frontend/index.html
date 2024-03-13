@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo list</title>
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <!-- Common Styles -->
+    <link rel="stylesheet" href="./styles/common/base.css" />
+    <link rel="stylesheet" href="./styles/common/colors.css" />
+    <link rel="stylesheet" href="./styles/common/utilities.css" />
+    <!-- Page Styles -->
+    <link rel="stylesheet" href="./styles/pages/index.css" />
+
+    <!-- Scripts -->
+    <script src="./js/common/base.js" defer></script>
+    <script src="./js/pages/index.js" defer></script>
+  </head>
+  <body>
+    <header class="margin-bottom">
+      <nav class="container">
+        <h1>Todo</h1>
+        <button class="logout-link">
+          <i class="fa-solid fa-power-off"></i>Log out
+        </button>
+      </nav>
+    </header>
+
+    <section class="container">
+      <div class="todos-header margin-bottom-sm">
+        <h2>My Todo List</h2>
+        <button class="button add-todo-button" disabled>
+          <span class="button-text-add"
+            ><i class="fa-solid fa-plus"></i> Add New</span
+          >
+          <span class="button-text-cancel hide"
+            ><i class="fa-solid fa-times"></i> Cancel</span
+          >
+        </button>
+      </div>
+      <form action="" class="add-todo-form margin-bottom-sm hide">
+        <input
+          type="text"
+          class="form-input margin-bottom-sm"
+          placeholder="Enter your todo, then press Enter to add it"
+        />
+        <p class="text-muted">
+          <strong>Tip:</strong> Add an exclamation point at the end of your
+          sentence to mark your todo as <strong>important</strong>.
+        </p>
+      </form>
+      <div class="todos">
+        <p class="no-todos">You don't have any todos right now.</p>
+      </div>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+.container {
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.hide {
+  display: none;
+}
+.text-center {
+  text-align: center;
+}
+.text-small {
+  font-size: 14px;
+}
+@media (max-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+@media (min-width: 768px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+.font-bold {
+  font-weight: bold;
+}
+.margin-x {
+  margin-left: var(--margin-sm);
+  margin-right: var(--margin-sm);
+}
+.margin-bottom {
+  margin-bottom: var(--margin);
+}
+.margin-bottom-sm {
+  margin-bottom: var(--margin-sm);
+}
+.margin-bottom-lg {
+  margin-bottom: var(--margin-lg);
+}
+.shadow {
+  box-shadow: 0 0 25px 0 var(--shadow-color);
+}
+.rounded-bottom {
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+}
+.capitalize {
+  text-transform: capitalize;
+}
