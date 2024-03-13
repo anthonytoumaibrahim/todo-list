@@ -43,7 +43,7 @@ function login($conn, $usernameOrEmail, $password)
 
   // Login successful
   $response['status'] = true;
-  $response['message'] = "Login successful.";
+  $response['message'] = "Login successful. Redirecting you in 3 seconds...";
   $response['data']['user_id'] = $id;
   return json_encode($response);
 }
