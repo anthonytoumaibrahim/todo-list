@@ -37,7 +37,8 @@
     <section class="container text-center">
       <h2>Signup</h2>
       <p class="margin-bottom">
-        Create an account now to start managing your todos! <a href="./login.html">Already have an account?</a>
+        Create an account now to start managing your todos!
+        <a href="./login.html">Already have an account?</a>
       </p>
       <form action="" method="POST" class="login-form">
         <div class="fieldset">
@@ -46,8 +47,7 @@
             type="text"
             id="username"
             class="form-input"
-            placeholder="your.username"
-            spellcheck="false"
+            placeholder="Must be between 6 and 20 characters"
           />
         </div>
         <div class="fieldset">
@@ -57,12 +57,16 @@
             id="email"
             class="form-input"
             placeholder="your@email.com"
-            spellcheck="false"
           />
         </div>
         <div class="fieldset">
           <label for="password">Password</label>
-          <input type="password" id="password" class="form-input" />
+          <input
+            type="password"
+            id="password"
+            class="form-input"
+            placeholder="Must be at least 8 characters long"
+          />
         </div>
         <p class="text-error hide" id="error-message">
           Please enter the correct credentials.
