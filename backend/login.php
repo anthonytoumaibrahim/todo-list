@@ -1,8 +1,11 @@
 <?php
 require_once('connection.php');
 
-$usernameOrEmail = $_POST['username'] ?? "";
-$password = $_POST['password'] ?? "";
+$json = file_get_contents('php://input');
+$json = json_decode($json, true);
+
+$usernameOrEmail = $json['username'] ?? "";
+$password = $json['password'] ?? "";
 
 function login($conn, $usernameOrEmail, $password)
 {
@@ -19,7 +22,7 @@ function login($conn, $usernameOrEmail, $password)
   }
 
   // Check if user exists
-  $query = $conn->prepare("SELECT id, username, email, password FROM users WHERE username=? OR email=?");
+  $query = $conn->prepare("SELECT * FROM users WHERE username=? OR email=?");
   $query->bind_param('ss', $usernameOrEmail, $usernameOrEmail);
   $query->execute();
   $query->store_result();

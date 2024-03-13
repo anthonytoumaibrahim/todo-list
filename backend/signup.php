@@ -1,9 +1,12 @@
 <?php
 require_once('connection.php');
 
-$username = $_POST['username'] ?? "";
-$email = $_POST['email'] ?? "";
-$password = $_POST['password'] ?? "";
+$json = file_get_contents('php://input');
+$json = json_decode($json, true);
+
+$username = $json['username'] ?? "";
+$email = $json['email'] ?? "";
+$password = $json['password'] ?? "";
 
 function createUser($conn, $username, $email, $password)
 {
