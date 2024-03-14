@@ -8,6 +8,8 @@ if (!isLoggedIn) {
   window.location.href = "./pages/login.html";
 }
 
+let todos = [];
+
 // Load stored todos
 const getTodos = async () => {
   const response = await fetch(
@@ -17,7 +19,7 @@ const getTodos = async () => {
   return data;
 };
 getTodos().then((data) => {
-  const todos = data.data;
+  todos = data.data;
   if (todos.length > 0) {
     no_todos.classList.toggle("hide", true);
     todos.forEach((todo) =>
@@ -25,10 +27,6 @@ getTodos().then((data) => {
     );
   }
 });
-
-function storeTodos(array) {
-  localStorage.todos = JSON.stringify(array);
-}
 
 const createTodo = async (value = "", checked = false, important = false) => {
   const response = await fetch(BASE_API_URL + "/CRUD/createTodo.php", {
@@ -65,6 +63,15 @@ const addToDo = (todo_id, value = "", checked = false, important = false) => {
   if (value.trim() === "") {
     return;
   }
+  todos = [
+    ...todos,
+    {
+      id: todo_id,
+      value: value,
+      checked: checked,
+      important: important,
+    },
+  ];
   const todo = document.createElement("div");
   todo.classList.add("todo");
   todo.dataset.id = todo_id;
@@ -74,7 +81,7 @@ const addToDo = (todo_id, value = "", checked = false, important = false) => {
 
   const check_icon = document.createElement("i");
   check_icon.classList.add("fa-solid", "fa-check", "checked-todo");
-  check_icon.addEventListener("click", () => checkTodo(todo_id));
+  check_icon.addEventListener("click", () => updateTodo(todo_id, true));
 
   const important_icon = document.createElement("i");
   important_icon.classList.add(
@@ -82,16 +89,23 @@ const addToDo = (todo_id, value = "", checked = false, important = false) => {
     "fa-exclamation-circle",
     "emphasis-icn"
   );
-  important_icon.addEventListener("click", () => emphasisTodo(todo_id));
+  important_icon.addEventListener("click", () =>
+    updateTodo(todo_id, false, true)
+  );
 
   const todo_text = document.createElement("p");
   todo_text.innerText = value;
   todo_text.classList.add("todo-text");
-  todo_text.addEventListener("click", () => checkTodo(todo_id));
+  todo_text.addEventListener("click", () => updateTodo(todo_id, true));
 
   const trash_icon = document.createElement("i");
   trash_icon.classList.add("fa-solid", "fa-trash", "delete-todo");
-  trash_icon.addEventListener("click", () => removeTodo(todo_id));
+  trash_icon.addEventListener("click", () => {
+    removeTodo(todo_id).then((data) => {
+      document.getElementById(`todo_${todo_id}`).remove();
+      no_todos.classList.toggle("hide", data.data.count !== 0);
+    });
+  });
 
   todo.append(check_icon, important_icon, todo_text, trash_icon);
   todosContainer.appendChild(todo);
@@ -99,43 +113,42 @@ const addToDo = (todo_id, value = "", checked = false, important = false) => {
   no_todos.classList.toggle("hide", true);
 };
 
-function removeTodo(id) {
-  document.getElementById(`todo_${id}`).remove();
-  todos = todos.filter((todo) => todo.id !== id);
-  storeTodos(todos);
-  if (todos.length == 0) no_todos.classList.toggle("hide", false);
-}
+const removeTodo = async (id) => {
+  const request = await fetch(
+    BASE_API_URL +
+      `/CRUD/deleteTodo.php?todoId=${id}&userId=${getLoggedInUser()}`
+  );
+  const data = await request.json();
+  return data;
+};
 
-function checkTodo(id) {
-  document.getElementById(`todo_${id}`).classList.toggle("todo-done");
-  todos = todos.map((todo) =>
-    todo.id === id
+function updateTodo(id, check = false, emphasis = false) {
+  const todo = todos.filter((td) => td.id === id)[0];
+  fetch(BASE_API_URL + "/CRUD/updateTodo.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      userId: getLoggedInUser(),
+      todoId: id,
+      checked: check ? !todo.checked : todo.checked,
+      important: emphasis ? !todo.important : todo.important,
+    }),
+  });
+  todos = todos.map((td) =>
+    td.id === id
       ? {
-          ...todo,
+          ...td,
           checked: !todo.checked,
         }
-      : todo
+      : td
   );
-  storeTodos(todos);
-}
-
-function emphasisTodo(id) {
+  if (check) {
+    document.getElementById(`todo_${id}`).classList.toggle("todo-done");
+    return;
+  }
   document.getElementById(`todo_${id}`).classList.toggle("todo-important");
-  todos = todos.map((todo) =>
-    todo.id === id
-      ? {
-          ...todo,
-          important: !todo.important,
-        }
-      : todo
-  );
-  storeTodos(todos);
-}
-
-function deleteAll() {
-  document.querySelectorAll(".todo").forEach((el) => el.remove());
-  storeTodos([]);
-  no_todos.classList.toggle("hide", false);
 }
 
 add_todo_button.addEventListener("click", () => {

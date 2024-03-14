@@ -12,5 +12,5 @@ const isLoggedIn = getLoggedInUser() ? true : false;
 
 document.querySelector(".logout-link")?.addEventListener("click", () => {
   localStorage.removeItem("userId");
-  window.location.replace("../pages/login.html");
+  window.location.replace("./pages/login.html");
 });
