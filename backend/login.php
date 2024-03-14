@@ -22,7 +22,7 @@ function login($conn, $usernameOrEmail, $password)
   }
 
   // Check if user exists
-  $query = $conn->prepare("SELECT * FROM users WHERE username=? OR email=?");
+  $query = $conn->prepare("SELECT id, username, email, password FROM users WHERE username=? OR email=?");
   $query->bind_param('ss', $usernameOrEmail, $usernameOrEmail);
   $query->execute();
   $query->store_result();

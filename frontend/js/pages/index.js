@@ -135,7 +135,14 @@ function updateTodo(id, check = false, emphasis = false) {
       checked: check ? !todo.checked : todo.checked,
       important: emphasis ? !todo.important : todo.important,
     }),
-  });
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      const score = data.data.score;
+      document
+        .querySelectorAll(".total-score")
+        .forEach((el) => (el.textContent = score));
+    });
   todos = todos.map((td) =>
     td.id === id
       ? {
@@ -160,3 +167,17 @@ add_todo_button.addEventListener("click", () => {
     .querySelector(".add-todo-button .button-text-cancel")
     .classList.toggle("hide");
 });
+
+const getUserScore = async (score = 0) => {
+  if (score > 0) return score;
+  const response = await fetch(
+    BASE_API_URL + `/getUserScore.php?userId=${getLoggedInUser()}`
+  );
+  const data = await response.json();
+  return data.message;
+};
+getUserScore().then((score) =>
+  document
+    .querySelectorAll(".total-score")
+    .forEach((el) => (el.textContent = score))
+);

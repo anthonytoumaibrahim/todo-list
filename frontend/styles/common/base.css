@@ -65,6 +65,11 @@ nav {
   align-items: center;
   justify-content: space-between;
 }
+.user-actions {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
 .logout-link {
   color: var(--error-color);
   background: none;
