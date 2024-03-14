@@ -13,3 +13,17 @@ $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if ($conn->connect_error) {
   exit("Connection failed: " . $conn->connect_error);
 }
+
+// Get user score
+function getUserScore($id)
+{
+  global $conn;
+  $query = $conn->prepare("SELECT points FROM users WHERE id=?");
+  $query->bind_param("i", $id);
+  $query->execute();
+  $query->store_result();
+  $query->bind_result($points);
+  $query->fetch();
+
+  return $points;
+}

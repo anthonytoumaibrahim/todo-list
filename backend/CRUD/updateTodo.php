@@ -24,5 +24,14 @@ $update_query = $conn->prepare("UPDATE todos SET checked=?, important=? WHERE id
 $update_query->bind_param("iiii", $checked, $important, $todoId, $userId);
 $update_query->execute();
 
+// Increment user's score
+if ($checked) {
+  $score = getUserScore($userId) + 1;
+  $query = $conn->prepare("UPDATE users SET points=? WHERE id=?");
+  $query->bind_param("ii", $score, $userId);
+  $query->execute();
+}
+
 $response['status'] = true;
+$response['data']['score'] = getUserScore($userId);
 echo json_encode($response);
