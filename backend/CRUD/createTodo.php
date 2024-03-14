@@ -6,6 +6,8 @@ $data = json_decode($json, true);
 
 $userId = $data['userId'] ?? 0;
 $value = $data['value'] ?? "";
+$checked = $data['checked'] ?? false;
+$important = $data['important'] ?? false;
 
 $response = [
   'status' => false,
@@ -17,9 +19,6 @@ if ($userId === 0) {
   $response['message'] = "User ID is required";
   exit(json_encode($response));
 }
-
-$checked = false;
-$important = false;
 
 $create = $conn->prepare("INSERT INTO todos (value, checked, important, user_id) VALUES (?, ?, ?, ?)");
 $create->bind_param('siis', $value, $checked, $important, $userId);
