@@ -45,6 +45,7 @@ function login($conn, $usernameOrEmail, $password)
   $response['status'] = true;
   $response['message'] = "Login successful. Redirecting you in 3 seconds...";
   $response['data']['user_id'] = $id;
+  $response['data']['token'] = generateToken($id);
   return json_encode($response);
 }
 

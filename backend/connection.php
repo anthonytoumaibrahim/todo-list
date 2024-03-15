@@ -14,6 +14,18 @@ if ($conn->connect_error) {
   exit("Connection failed: " . $conn->connect_error);
 }
 
+// Generate & validate token
+function generateToken($userId) {
+  return md5($userId . "abcdef123456");
+}
+function validateToken($token, $userId) {
+  $ver = generateToken($userId);
+  if($token === $ver) {
+    return true;
+  }
+  return false;
+}
+
 // Get user score
 function getUserScore($id)
 {

@@ -28,6 +28,7 @@ loginForm.addEventListener("submit", (e) => {
       if (data.status) {
         loginBtn.disabled = true;
         localStorage.userId = data.data.user_id;
+        localStorage.token = data.data.token;
         setTimeout(() => {
           window.location.href = "../index.html";
         }, 3000);

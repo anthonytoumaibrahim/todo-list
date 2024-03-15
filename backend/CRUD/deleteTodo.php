@@ -3,6 +3,7 @@ require_once('../connection.php');
 
 $todoId = $_GET['todoId'] ?? 0;
 $userId = $_GET['userId'] ?? 0;
+$token = $_GET['token'] ?? "";
 
 $response = [
   'status' => false,
@@ -10,8 +11,14 @@ $response = [
   'data' => []
 ];
 
-if ($todoId === 0 || $userId === 0) {
-  $response['message'] = "Todo ID & User ID are required";
+// Verify token
+if (!validateToken($token, $userId)) {
+  $response['message'] = "Wrong token.";
+  exit(json_encode($response));
+}
+
+if ($todoId === 0) {
+  $response['message'] = "Todo ID is required";
   exit(json_encode($response));
 }
 

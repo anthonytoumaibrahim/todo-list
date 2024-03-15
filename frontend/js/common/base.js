@@ -2,8 +2,12 @@ BASE_API_URL = "http://localhost:8000";
 
 const getLoggedInUser = () => {
   const storedUserId = localStorage.userId;
-  if (storedUserId) {
-    return storedUserId;
+  const storedToken = localStorage.token;
+  if (storedUserId && storedToken) {
+    return {
+      id: storedUserId,
+      token: storedToken,
+    };
   }
   return false;
 };

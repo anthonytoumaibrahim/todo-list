@@ -5,6 +5,7 @@ $json = file_get_contents('php://input');
 $data = json_decode($json, true);
 
 $userId = $data['userId'] ?? 0;
+$token = $data['token'] ?? "";
 $value = $data['value'] ?? "";
 $checked = $data['checked'] ?? false;
 $important = $data['important'] ?? false;
@@ -15,8 +16,14 @@ $response = [
   'data' => []
 ];
 
-if ($userId === 0) {
-  $response['message'] = "User ID is required";
+// Verify token
+if (!validateToken($token, $userId)) {
+  $response['message'] = "Wrong token.";
+  exit(json_encode($response));
+}
+
+if (trim($value) === "") {
+  $response['message'] = "Please enter a todo";
   exit(json_encode($response));
 }
 

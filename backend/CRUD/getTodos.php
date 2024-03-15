@@ -2,6 +2,7 @@
 require_once('../connection.php');
 
 $userId = $_GET['userId'] ?? 0;
+$token = $_GET['token'] ?? "";
 
 $response = [
   'status' => false,
@@ -9,8 +10,9 @@ $response = [
   'data' => []
 ];
 
-if ($userId === 0) {
-  $response['message'] = "User ID is required";
+// Verify token
+if (!validateToken($token, $userId)) {
+  $response['message'] = "Wrong token.";
   exit(json_encode($response));
 }
 

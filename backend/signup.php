@@ -52,9 +52,12 @@ function createUser($conn, $username, $email, $password)
   $add_user->bind_param('sss', $username, $email, $hashed_password);
   $add_user->execute();
 
+  $id = $conn->insert_id;
+
   $response['status'] = true;
   $response['message'] = 'Your account has been successfully created! Redirecting you in 3 seconds...';
-  $response['data']['user_id'] = $conn->insert_id;
+  $response['data']['user_id'] = $id;
+  $response['data']['token'] = generateToken($id);
   return json_encode($response);
 }
 

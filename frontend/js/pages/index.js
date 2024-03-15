@@ -13,7 +13,10 @@ let todos = [];
 // Load stored todos
 const getTodos = async () => {
   const response = await fetch(
-    BASE_API_URL + `/CRUD/getTodos.php?userId=${getLoggedInUser()}`
+    BASE_API_URL +
+      `/CRUD/getTodos.php?userId=${getLoggedInUser().id}&token=${
+        getLoggedInUser().token
+      }`
   );
   const data = await response.json();
   return data;
@@ -29,6 +32,9 @@ getTodos().then((data) => {
 });
 
 const createTodo = async (value = "", checked = false, important = false) => {
+  if (value.trim() === "") {
+    throw new Error("value cannot be empty");
+  }
   const response = await fetch(BASE_API_URL + "/CRUD/createTodo.php", {
     method: "POST",
     headers: {
@@ -38,7 +44,8 @@ const createTodo = async (value = "", checked = false, important = false) => {
       value: value,
       checked: checked,
       important: important,
-      userId: getLoggedInUser(),
+      userId: getLoggedInUser().id,
+      token: getLoggedInUser().token,
     }),
   });
   const data = await response.json();
@@ -52,11 +59,13 @@ add_todo_form.addEventListener("submit", (event) => {
   if (input.value.slice(-1) == "!") {
     important = true;
   }
-  createTodo(input.value, false, important).then((data) => {
-    const id = data.data.id;
-    addToDo(id, input.value, false, important);
-    input.value = "";
-  });
+  createTodo(input.value, false, important)
+    .then((data) => {
+      const id = data.data.id;
+      addToDo(id, input.value, false, important);
+      input.value = "";
+    })
+    .catch((error) => console.log(error));
 });
 
 const addToDo = (todo_id, value = "", checked = false, important = false) => {
@@ -116,7 +125,9 @@ const addToDo = (todo_id, value = "", checked = false, important = false) => {
 const removeTodo = async (id) => {
   const request = await fetch(
     BASE_API_URL +
-      `/CRUD/deleteTodo.php?todoId=${id}&userId=${getLoggedInUser()}`
+      `/CRUD/deleteTodo.php?todoId=${id}&userId=${getLoggedInUser().id}&token=${
+        getLoggedInUser().token
+      }`
   );
   const data = await request.json();
   return data;
@@ -130,7 +141,8 @@ function updateTodo(id, check = false, emphasis = false) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      userId: getLoggedInUser(),
+      userId: getLoggedInUser().id,
+      token: getLoggedInUser().token,
       todoId: id,
       checked: check ? !todo.checked : todo.checked,
       important: emphasis ? !todo.important : todo.important,
@@ -171,7 +183,10 @@ add_todo_button.addEventListener("click", () => {
 const getUserScore = async (score = 0) => {
   if (score > 0) return score;
   const response = await fetch(
-    BASE_API_URL + `/getUserScore.php?userId=${getLoggedInUser()}`
+    BASE_API_URL +
+      `/getUserScore.php?userId=${getLoggedInUser().id}&token=${
+        getLoggedInUser().token
+      }`
   );
   const data = await response.json();
   return data.message;
